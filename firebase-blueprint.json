@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A clothing item for sale",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number", "description": "Price in BDT" },
+        "category": { "type": "string" },
+        "images": { "type": "array", "items": { "type": "string" } },
+        "sizes": { "type": "array", "items": { "type": "string" } },
+        "colors": { "type": "array", "items": { "type": "string" } },
+        "stock": { "type": "number" },
+        "isNewArrival": { "type": "boolean" },
+        "isSale": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "price", "category"]
+    },
+    "User": {
+      "title": "User Profile",
+      "description": "User specific data including loyalty points and preferences",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "loyaltyPoints": { "type": "number", "description": "Points earned through purchases" },
+        "wishlist": { "type": "array", "items": { "type": "string" }, "description": "Array of product product IDs" },
+        "isAdmin": { "type": "boolean" }
+      }
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A purchase record",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": { "type": "array", "items": { "type": "object" } },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "shippingAddress": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "pointsEarned": { "type": "number" }
+      },
+      "required": ["userId", "items", "totalAmount", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "System or user specific notifications",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "type": { "type": "string", "enum": ["arrival", "sale", "order", "system"] }
+      },
+      "required": ["title", "message", "read", "type"]
+    }
+  },
+  "firestore": {
+    "products/{productId}": {
+      "schema": "Product",
+      "description": "Global product catalog"
+    },
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and specific settings"
+    },
+    "orders/{orderId}": {
+      "schema": "Order",
+      "description": "Historical order records"
+    },
+    "notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "Messages for users"
+    }
+  }
+}
